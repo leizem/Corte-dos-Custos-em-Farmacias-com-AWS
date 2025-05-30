@@ -1,0 +1,200 @@
+D.1 Procedimentos Operacionais Padrão (SOPs)
+SOP-001: Monitoramento Diário de Custos
+Objetivo: Garantir monitoramento proativo dos custos AWS
+Frequência: Diário (segunda a sexta, 9h)
+Responsável: Equipe de Cloud Operations
+Procedimento:
+
+Acessar AWS Cost Explorer Dashboard
+Verificar gastos do dia anterior vs. média mensal
+Identificar anomalias superiores a 15%
+Investigar recursos com alto custo não planejado
+Documentar findings e ações corretivas
+Comunicar desvios significativos ao gestor
+
+Critérios de Escalação:
+
+Desvio >25% do orçamento diário: Escalar imediatamente
+Recursos não identificados >$100: Escalar em 2h
+Falha nos alertas automáticos: Escalar em 1h
+
+SOP-002: Resposta a Alertas de Auto Scaling
+Objetivo: Responder adequadamente a eventos de scaling
+Responsável: Equipe de Infraestrutura
+Procedimento:
+
+Scale-Out Trigger:
+
+Verificar causa do aumento de demanda
+Confirmar que scaling foi apropriado
+Monitorar estabilização da performance
+Documentar evento se anômalo
+
+
+Scale-In Trigger:
+
+Verificar se redução de instâncias é segura
+Confirmar que não há processos críticos em execução
+Monitorar impacto na performance
+Intervir manualmente se necessário
+
+
+Scaling Failure:
+
+Verificar limites de service quotas
+Confirmar saúde das instâncias existentes
+Escalar para equipe de Cloud Architecture
+Implementar fallback manual se crítico
+
+
+
+SOP-003: Otimização Semanal de Recursos
+Objetivo: Identificar oportunidades de otimização
+Frequência: Semanal (sextas, 14h)
+Procedimento:
+
+Executar AWS Trusted Advisor
+Revisar recomendações de cost optimization
+Analisar instâncias com baixa utilização (<30%)
+Verificar volumes EBS não utilizados
+Revisar Reserved Instances subutilizadas
+Gerar relatório de recomendações
+Priorizar e agendar implementações
+
+D.2 Guia de Troubleshooting
+Problema: Lambda Functions com Cold Start Elevado
+Sintomas:
+
+Latência >3 segundos na primeira invocação
+Timeouts esporádicos
+Usuários reportando lentidão
+
+Diagnóstico:
+bash# Verificar métricas de duração no CloudWatch
+aws logs filter-log-events \
+  --log-group-name "/aws/lambda/function-name" \
+  --filter-pattern "REPORT" \
+  --start-time 1234567890000
+
+# Analisar init duration
+aws cloudwatch get-metric-statistics \
+  --namespace AWS/Lambda \
+  --metric-name InitDuration \
+  --dimensions Name=FunctionName,Value=function-name \
+  --start-time 2023-01-01T00:00:00Z \
+  --end-time 2023-01-02T00:00:00Z \
+  --period 300 \
+  --statistics Average
+Soluções:
+
+Provisioned Concurrency:
+bashaws lambda put-provisioned-concurrency-config \
+  --function-name function-name \
+  --provisioned-concurrency-config AllocatedConcurrency=5
+
+Otimização de código:
+
+Mover imports para fora do handler
+Reutilizar conexões de database
+Reduzir tamanho do deployment package
+
+
+Warm-up schedule:
+python# CloudWatch Event para manter função aquecida
+def warmup_handler(event, context):
+    if event.get('source') == 'aws.events':
+        return {'statusCode': 200, 'body': 'warmup'}
+
+
+Problema: Auto Scaling Thrashing
+Sintomas:
+
+Instâncias sendo criadas e terminadas rapidamente
+Oscilação constante no número de instâncias
+Custos elevados sem benefício de performance
+
+Diagnóstico:
+bash# Verificar histórico de scaling activities
+aws autoscaling describe-scaling-activities \
+  --auto-scaling-group-name abstergo-web-frontend-asg \
+  --max-records 50
+
+# Analisar métricas de CPU
+aws cloudwatch get-metric-statistics \
+  --namespace AWS/EC2 \
+  --metric-name CPUUtilization \
+  --dimensions Name=AutoScalingGroupName,Value=abstergo-web-frontend-asg \
+  --start-time 2023-01-01T00:00:00Z \
+  --end-time 2023-01-01T12:00:00Z \
+  --period 60 \
+  --statistics Average
+Soluções:
+
+Ajustar cool-down periods:
+json{
+  "ScaleOutCooldown": 300,
+  "ScaleInCooldown": 600
+}
+
+Implementar step scaling:
+json{
+  "PolicyType": "StepScaling",
+  "StepAdjustments": [
+    {
+      "MetricIntervalLowerBound": 0,
+      "MetricIntervalUpperBound": 50,
+      "ScalingAdjustment": 1
+    },
+    {
+      "MetricIntervalLowerBound": 50,
+      "ScalingAdjustment": 2
+    }
+  ]
+}
+
+Adicionar múltiplas métricas:
+
+CPU + Memory + Request Count
+Usar composite alarms
+
+
+
+Problema: Custos Inesperados no Cost Explorer
+Sintomas:
+
+Picos de custo não explicados
+Novos serviços aparecendo no billing
+Recursos sem tags identificadas
+
+Diagnóstico:
+
+Identificar recursos sem tags:
+bash# Script para listar recursos sem tags obrigatórias
+aws ec2 describe-instances \
+  --query 'Reservations[].Instances[?!Tags || !Tags[?Key==`Project`]].[InstanceId,State.Name]' \
+  --output table
+
+Analisar por serviço:
+bashaws ce get-cost-and-usage \
+  --time-period Start=2023-01-01,End=2023-01-31 \
+  --granularity MONTHLY \
+  --metrics BlendedCost \
+  --group-by Type=DIMENSION,Key=SERVICE
+
+
+Soluções:
+
+Implementar AWS Config Rules:
+json{
+  "ConfigRuleName": "required-tags",
+  "Source": {
+    "Owner": "AWS",
+    "SourceIdentifier": "REQUIRED_TAGS"
+  },
+  "InputParameters": "{\"tag1Key\":\"Project\",\"tag2Key\":\"Environment\"}"
+}
+
+Budget alerts granulares:
+bashaws budgets create-budget \
+  --budget file://budget-config.json \
+  --notifications-with-subscribers file://notifications.json
