@@ -404,7 +404,7 @@ Com isso, a empresa passou a executar código sob demanda, pagando exclusivament
 
 **Métricas de Custo:**
 - Redução de 71% nos custos operacionais das aplicações migradas
-- Eliminação de $4.200/mês em custos de instâncias dedicadas
+- Eliminação de R$4.200/mês em custos de instâncias dedicadas
 - ROI de 340% no primeiro ano após migração
 
 **Métricas de Performance:**
@@ -422,7 +422,7 @@ Além da economia gerada, a adoção do AWS Lambda trouxe benefícios como maior
 
 **Redução de Custos:**
 - **Custo Total de Propriedade (TCO):** Redução de 43% em 4 meses
-- **Custos Mensais Recorrentes:** De $28.400 para $16.200 mensais
+- **Custos Mensais Recorrentes:** De R$28.400 para R$16.200 mensais
 - **Custo por Transação:** Redução de 38% no custo unitário
 - **ROI do Projeto:** 285% em 12 meses projetados
 
@@ -444,7 +444,7 @@ Além da economia gerada, a adoção do AWS Lambda trouxe benefícios como maior
 
 | Métrica | Antes | Depois | Melhoria |
 |---------|--------|---------|----------|
-| Custo Mensal AWS | $28.400 | $16.200 | -43% |
+| Custo Mensal AWS | R$28.400 | R$16.200 | -43% |
 | Instâncias EC2 Ativas | 78 | 45 | -42% |
 | Utilização Média CPU | 45% | 78% | +73% |
 | Downtime Mensal | 4.2 horas | 0.8 horas | -81% |
@@ -461,12 +461,12 @@ Além da economia gerada, a adoção do AWS Lambda trouxe benefícios como maior
 **Ambiente de Staging:**
 - Redução de 78% nos custos (maior impacto devido ao uso intermitente)
 - Implementação de shutdown automático fora do horário comercial
-- Economia de $2.100/mês
+- Economia de R$2.100/mês
 
 **Ambiente de Desenvolvimento:**
 - Redução de 85% nos custos
 - Implementação de scheduler para instâncias (ligadas apenas durante horário de trabalho)
-- Economia de $3.400/mês
+- Economia de R$3.400/mês
 
 ---
 
@@ -477,7 +477,7 @@ Além da economia gerada, a adoção do AWS Lambda trouxe benefícios como maior
 **Policy de Cost Management:**
 - Budget alerts configurados para todos os projetos
 - Revisão mensal obrigatória de custos por equipe
-- Aprovação obrigatória para recursos acima de $500/mês
+- Aprovação obrigatória para recursos acima de R$500/mês
 
 **Tagging Strategy:**
 - Tags obrigatórias para todos os recursos
@@ -565,7 +565,7 @@ Além da economia gerada, a adoção do AWS Lambda trouxe benefícios como maior
 A implementação das três ferramentas da AWS trouxe resultados excepcionais e superou as expectativas iniciais do projeto. Entre os principais benefícios alcançados pela Abstergo Industries, destacam-se:
 
 **Impacto Financeiro:**
-- **Redução expressiva de 43% nos custos mensais** com infraestrutura em nuvem, equivalente a uma economia de $12.200 mensais
+- **Redução expressiva de 43% nos custos mensais** com infraestrutura em nuvem, equivalente a uma economia de R$12.200 mensais
 - **ROI de 285%** considerando o investimento em tempo e recursos do projeto
 - **Payback period de 4.2 meses** para o investimento total realizado
 
