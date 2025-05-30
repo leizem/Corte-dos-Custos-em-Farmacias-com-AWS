@@ -1,0 +1,35 @@
+{
+  "AutoScalingGroupName": "asg-abstergo-web",
+  "LaunchTemplate": {
+    "LaunchTemplateName": "lt-webserver-template",
+    "Version": "$Latest"
+  },
+  "MinSize": 1,
+  "MaxSize": 6,
+  "DesiredCapacity": 2,
+  "AvailabilityZones": ["us-east-1a", "us-east-1b"],
+  "HealthCheckType": "EC2",
+  "HealthCheckGracePeriod": 300,
+  "TargetGroupARNs": ["arn:aws:elasticloadbalancing:us-east-1:xxx:targetgroup/tg-web/abc123"],
+  "Tags": [
+    {
+      "Key": "Project",
+      "Value": "AWS Optimization",
+      "PropagateAtLaunch": true
+    }
+  ],
+  "ScalingPolicies": [
+    {
+      "PolicyName": "scale-out",
+      "AdjustmentType": "ChangeInCapacity",
+      "ScalingAdjustment": 1,
+      "Cooldown": 300
+    },
+    {
+      "PolicyName": "scale-in",
+      "AdjustmentType": "ChangeInCapacity",
+      "ScalingAdjustment": -1,
+      "Cooldown": 300
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "PolicyName": "abstergo-web-request-policy", 
+  "PolicyType": "TargetTrackingScaling",
+  "TargetTrackingConfiguration": {
+    "TargetValue": 1000.0,
+    "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "ALBRequestCountPerTarget",
+      "ResourceLabel": "app/abstergo-alb/1234567890/targetgroup/abstergo-tg/0987654321"
+    },
+    "ScaleOutCooldown": 120,
+    "ScaleInCooldown": 180
+  }
+}
