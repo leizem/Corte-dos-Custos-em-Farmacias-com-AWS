@@ -1,0 +1,26 @@
+{
+  "LaunchTemplateName": "abstergo-web-template",
+  "LaunchTemplateData": {
+    "ImageId": "ami-0abcdef1234567890",
+    "InstanceType": "t3.medium",
+    "SecurityGroupIds": ["sg-0123456789abcdef0"],
+    "UserData": "IyEvYmluL2Jhc2gKL29wdC9hd3MvYmluL2Nmd...",
+    "IamInstanceProfile": {
+      "Name": "abstergo-web-instance-profile"
+    },
+    "Monitoring": {
+      "Enabled": true
+    },
+    "TagSpecifications": [
+      {
+        "ResourceType": "instance",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "abstergo-web-server"
+          }
+        ]
+      }
+    ]
+  }
+}

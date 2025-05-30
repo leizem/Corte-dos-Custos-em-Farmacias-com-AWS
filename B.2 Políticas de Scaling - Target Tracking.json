@@ -1,0 +1,15 @@
+# Política de CPU Utilization
+
+{
+  "PolicyName": "abstergo-web-cpu-policy",
+  "PolicyType": "TargetTrackingScaling",
+  "TargetTrackingConfiguration": {
+    "TargetValue": 70.0,
+    "PredefinedMetricSpecification": {
+      "PredefinedMetricType": "ASGAverageCPUUtilization"
+    },
+    "ScaleOutCooldown": 180,
+    "ScaleInCooldown": 300,
+    "DisableScaleIn": false
+  }
+}

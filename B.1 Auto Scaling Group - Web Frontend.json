@@ -1,0 +1,32 @@
+{
+  "AutoScalingGroupName": "abstergo-web-frontend-asg",
+  "LaunchTemplate": {
+    "LaunchTemplateName": "abstergo-web-template",
+    "Version": "2"
+  },
+  "MinSize": 2,
+  "MaxSize": 20,
+  "DesiredCapacity": 4,
+  "DefaultCooldown": 300,
+  "AvailabilityZones": [
+    "us-east-1a",
+    "us-east-1b", 
+    "us-east-1c"
+  ],
+  "HealthCheckType": "ELB",
+  "HealthCheckGracePeriod": 120,
+  "Tags": [
+    {
+      "Key": "Environment",
+      "Value": "Production"
+    },
+    {
+      "Key": "Project", 
+      "Value": "WebFrontend"
+    },
+    {
+      "Key": "Owner",
+      "Value": "tiago.monteiro@abstergo.com"
+    }
+  ]
+}
